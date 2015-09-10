@@ -43,7 +43,19 @@ export default function renderTooltip(domElement = {}, options = {}) {
     Ember.$(domElement)[options.event](function() {
       const willShow = tooltip.hidden;
 
-      tooltip.toggle();
+      // Bespoke handling of hover events. This fixes
+      // a bug in the Tooltip.js library, where it's
+      // possible for the tooltip to have it's property
+      // set as hidden when it's visible, which makes
+      // calling toggle() mean we see the tooltip when
+      // we mouse out.
+      if (e.type === 'mouseenter') {
+        tooltip.show();
+      } else if (e.type === 'mouseleave') {
+        tooltip.hide();
+      } else {
+        tooltip.toggle(); // Default to previous behaviour
+      }
 
       // Clean previously queued removal (if present)
       Ember.run.cancel(tooltip._hideTimer);
