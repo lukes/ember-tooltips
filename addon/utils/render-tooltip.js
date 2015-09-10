@@ -40,7 +40,7 @@ export default function renderTooltip(domElement = {}, options = {}) {
   tooltip.attach(domElement);
 
   if (options.event !== 'manual') {
-    Ember.$(domElement)[options.event](function() {
+    Ember.$(domElement)[options.event](function(e) {
       const willShow = tooltip.hidden;
 
       // Bespoke handling of hover events. This fixes
